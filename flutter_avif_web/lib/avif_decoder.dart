@@ -7,8 +7,9 @@ import 'dart:js_interop_unsafe';
 import 'dart:typed_data';
 import 'dart:ui_web';
 
+import 'package:flutter_avif_platform_interface/models/avif_info.pb.dart';
+import 'package:flutter_avif_platform_interface/models/frame.pb.dart';
 import 'package:web/web.dart' as web;
-import 'package:flutter_avif_platform_interface/flutter_avif_platform_interface.dart';
 
 Completer? _scriptLoaderCompleter;
 
@@ -30,7 +31,9 @@ Future<void> loadScript() async {
   await script.onLoad.first;
 
   final initBindgen = _initBindgen(assetManager
-      .getAssetUrl('packages/flutter_avif_web/web/avif_decoder.worker.js').toJS).toDart;
+          .getAssetUrl('packages/flutter_avif_web/web/avif_decoder.worker.js')
+          .toJS)
+      .toDart;
   await initBindgen;
 
   _scriptLoaderCompleter!.complete();
@@ -86,7 +89,8 @@ external JSPromise _initBindgen(JSString workerPath);
 external JSPromise<JSObject> _decodeSingleFrameImage(JSUint8Array data);
 
 @JS('window.avif_decoder.initMemoryDecoder')
-external JSPromise<JSObject> _initMemoryDecoder(JSString key, JSUint8Array data);
+external JSPromise<JSObject> _initMemoryDecoder(
+    JSString key, JSUint8Array data);
 
 @JS('window.avif_decoder.getNextFrame')
 external JSPromise<JSObject> _getNextFrame(JSString key);
